@@ -20,39 +20,44 @@ namespace Backend
         {
             if (to == null) return;
 
-            if (from == downFrom)
+            if (from == downTo)
             {
-                if (to == leftTo)
-                {
-                    if (HasSpaceFromSide(car, progress, upFrom) && HasSpaceFromFront(car, progress, to))
-                    {
-                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress + World.CarDistance));
-                    }
-                }
+                if (to != leftFrom || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, upTo) && HasSpaceFromFront(car, progress, to)))
+                    return;
             }
-            else if (from == upFrom)
+            else if (from == upTo)
             {
-                if (to == rightTo)
-                {
-                    if (HasSpaceFromSide(car, progress, downFrom) && HasSpaceFromFront(car, progress, to))
-                    {
-                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress + World.CarDistance));
-                    }
-                }
+                if (to != rightFrom || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromFront(car, progress, to)))
+                    return;
             }
-            else if (from == rightFrom)
+            else if (from == rightTo)
             {
-                if ((to == upTo || HasSpaceFromSide(car, progress, upFrom)) && HasSpaceFromSide(car, progress, downFrom) && HasSpaceFromFront(car, progress, to))
+                if (to == upFrom)
                 {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress + World.CarDistance));
+                    if (HasSpaceFromSide(car, progress, downTo) && HasSpaceFromFront(car, progress, to))
+                        return;
                 }
+                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, upTo) && HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromFront(car, progress, to))
+                    return;
             }
-            else if (from == leftFrom)
+            else if (from == leftTo)
             {
-                if ((to == downTo || HasSpaceFromSide(car, progress, downFrom)) && HasSpaceFromSide(car, progress, upFrom) && HasSpaceFromFront(car, progress, to))
+                if (to == downFrom)
                 {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress + World.CarDistance));
+                    if (HasSpaceFromSide(car, progress, upTo) && HasSpaceFromFront(car, progress, to))
+                        return;
                 }
+                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromSide(car, progress, upTo) && HasSpaceFromFront(car, progress - World.RoadWidth / 2, to))
+                    return;
+            }
+
+            if (-progress < car.SafeDistance(car.Speed))
+            {
+                requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
+            }
+            else
+            {
+                requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress));
             }
         }
 
@@ -61,8 +66,8 @@ namespace Backend
             if (check == null || check.CarCount == 0) return true;
             
             var c = check[0];
-
-            return c.TimeTo(check.Length - c.Progress) < car.TimeTo(-progress + World.RoadWidth);
+            if (Frontend.WorldFront.Instance.SellectedCar != null && Frontend.WorldFront.Instance.SellectedCar.car == car) Debug.Log(string.Format("{0}: {1} > {2}: {3}", check.Length - c.Progress, c.TimeTo(check.Length - c.Progress), -progress, car.TimeTo(-progress)));
+            return c.TimeTo(check.Length - c.Progress) > car.TimeTo(-progress);
         }
 
         private bool HasSpaceFromFront(ICar car, float progress, IRoad check)
@@ -71,7 +76,7 @@ namespace Backend
             
             var c = check[check.CarCount - 1];
 
-            return car.SafeDistance(Mathf.Min(car.Speed, c.Speed)) - c.Progress > World.RoadWidth;
+            return c.Progress - car.SafeDistance(Mathf.Min(car.Speed, c.Speed)) > World.RoadWidth;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Frontend
             var nodeFrom = from == null ? to.To.Position : from.From.Position;
             var nodeTo = from == null ? to.From.Position : from.To.Position;
             var v = nodeFrom - nodeTo;
-            var dir = Mathf.FloorToInt(((360 + 45 + Mathf.Atan2(v.x, -v.y) * Mathf.Rad2Deg - transform.rotation.z) / 4) % 4);
+            var dir = Mathf.FloorToInt((180 + 45 + Mathf.Atan2(v.x, v.y) * Mathf.Rad2Deg - transform.rotation.eulerAngles.z) / 90) % 4;
 
             switch (nodeType)
             {
