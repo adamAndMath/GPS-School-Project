@@ -39,8 +39,12 @@ namespace Frontend
             get { return sellectedCar; }
             set
             {
+                var pre = sellectedCar;
                 sellectedCar = value;
                 carData.Clear();
+
+                if (pre) pre.UpdateColor();
+                if (value) value.UpdateColor();
             }
         }
 

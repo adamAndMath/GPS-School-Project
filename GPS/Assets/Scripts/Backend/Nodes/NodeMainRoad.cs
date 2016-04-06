@@ -66,7 +66,7 @@ namespace Backend
             if (check == null || check.CarCount == 0) return true;
             
             var c = check[0];
-            if (Frontend.WorldFront.Instance.SellectedCar != null && Frontend.WorldFront.Instance.SellectedCar.car == car) Debug.Log(string.Format("{0}: {1} > {2}: {3}", check.Length - c.Progress, c.TimeTo(check.Length - c.Progress), -progress, car.TimeTo(-progress)));
+
             return c.TimeTo(check.Length - c.Progress) > car.TimeTo(-progress);
         }
 

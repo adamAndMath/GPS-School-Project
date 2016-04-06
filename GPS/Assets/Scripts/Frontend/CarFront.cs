@@ -15,6 +15,7 @@ namespace Frontend
 
         private new SpriteRenderer renderer;
         private Color color;
+        private bool mouseOver;
 
         void Awake()
         {
@@ -54,12 +55,26 @@ namespace Frontend
 
         void OnMouseEnter()
         {
-            renderer.color = Color.Lerp(color, Color.white, 0.75F);
+            mouseOver = true;
+            UpdateColor();
         }
 
         void OnMouseExit()
         {
-            renderer.color = color;
+            mouseOver = false;
+            UpdateColor();
+        }
+
+        public void UpdateColor()
+        {
+            if (mouseOver || WorldFront.Instance.SellectedCar == this)
+            {
+                renderer.color = Color.Lerp(color, Color.white, 0.75F);
+            }
+            else
+            {
+                renderer.color = color;
+            }
         }
 
         void OnGUI()
