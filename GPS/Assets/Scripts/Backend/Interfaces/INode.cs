@@ -9,6 +9,8 @@ namespace Backend
 
         List<IRoad> Roads { get; }
 
+        void Update(float deltaTime);
+
         void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown);
     }
 }

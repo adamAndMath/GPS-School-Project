@@ -15,6 +15,11 @@ namespace Backend
             Position = position;
         }
 
+        public virtual void Update(float deltaTime)
+        {
+
+        }
+
         public virtual void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {
 

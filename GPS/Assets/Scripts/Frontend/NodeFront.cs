@@ -10,12 +10,13 @@ namespace Frontend
 
         public NodeType nodeType;
         public float spawnRate;
+        public NodeLight.LightSequence lightSequence;
 
         private float timer;
         private INode node;
         public INode Node { get { return node; } }
 
-        public enum NodeType { Turn, MainRoad }
+        public enum NodeType { Turn, MainRoad, Light }
 
         void OnEnable()
         {
@@ -36,6 +37,9 @@ namespace Frontend
                     break;
                 case NodeType.MainRoad:
                     node = new NodeMainRoad(transform.position);
+                    break;
+                case NodeType.Light:
+                    node = new NodeLight(transform.position, new NodeLight.LightSequence());
                     break;
             }
         }
@@ -70,6 +74,27 @@ namespace Frontend
                         case 3:
                             ((NodeMainRoad)node).leftFrom = from;
                             ((NodeMainRoad)node).leftTo = to;
+                            break;
+                    }
+                    break;
+                case NodeType.Light:
+                    switch (dir)
+                    {
+                        case 0:
+                            ((NodeLight)node).upFrom = from;
+                            ((NodeLight)node).upTo = to;
+                            break;
+                        case 1:
+                            ((NodeLight)node).rightFrom = from;
+                            ((NodeLight)node).rightTo = to;
+                            break;
+                        case 2:
+                            ((NodeLight)node).downFrom = from;
+                            ((NodeLight)node).downTo = to;
+                            break;
+                        case 3:
+                            ((NodeLight)node).leftFrom = from;
+                            ((NodeLight)node).leftTo = to;
                             break;
                     }
                     break;

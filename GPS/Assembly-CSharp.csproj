@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Backend\Interfaces\IPathFinder.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\IRoad.cs" />
      <Compile Include="Assets\Scripts\Backend\Nodes\Node.cs" />
+     <Compile Include="Assets\Scripts\Backend\Nodes\NodeLight.cs" />
      <Compile Include="Assets\Scripts\Backend\Nodes\NodeMainRoad.cs" />
      <Compile Include="Assets\Scripts\Backend\PathFinder.cs" />
      <Compile Include="Assets\Scripts\Backend\Road.cs" />

@@ -102,6 +102,11 @@ namespace Frontend
                 car.car.UpdateSpeedAndProgress(deltaTime);
             }
 
+            foreach (var node in NodeFront.Nodes)
+            {
+                node.Node.Update(deltaTime);
+            }
+
             if (SellectedCar)
             {
                 if (SellectedCar.car.Complete)
