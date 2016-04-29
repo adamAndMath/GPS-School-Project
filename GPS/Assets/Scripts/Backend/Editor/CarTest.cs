@@ -33,6 +33,7 @@ public class CarTest
         //Arrange
         var car = new Car();
         World.WorldScale = 3;
+        World.RoadWidth = 0;
         var node0 = new Node(new Vector2(0, 0));
         var node1 = new Node(new Vector2(4, 3));
         var node2 = new Node(new Vector2(7, 7));
@@ -59,6 +60,7 @@ public class CarTest
         var car = new CarGPS();
         World.WorldScale = 3;
         World.EstimationSpeedLimit = 5;
+        World.RoadWidth = 0;
         var node0 = new Node(new Vector2(0, 0));
         var node1 = new Node(new Vector2(4, 3));
         var node2 = new Node(new Vector2(7, 7));

@@ -5,15 +5,6 @@ namespace Backend
 {
     public class NodeLight : Node
     {
-        public IRoad downFrom;
-        public IRoad downTo;
-        public IRoad upFrom;
-        public IRoad upTo;
-        public IRoad rightFrom;
-        public IRoad rightTo;
-        public IRoad leftFrom;
-        public IRoad leftTo;
-
         private readonly LightSequence sequence;
         private bool light;
         private float timer;
@@ -52,7 +43,7 @@ namespace Backend
 
         public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {
-            if (light == (from == upTo || from == downTo))
+            if (light == (from == RoadTo[(int)Direction.Up] || from == RoadTo[(int)Direction.Down]))
             {
                 if (-progress-1 < car.SafeDistance(car.Speed))
                 {

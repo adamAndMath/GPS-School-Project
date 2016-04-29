@@ -11,6 +11,7 @@ namespace Backend
         public float NiceDeceleration { get; set; }
         public List<IRoad> Path { get; private set; }
         public float Progress { get; set; }
+        public bool IsNoding { get; set; }
         public float Speed { get; set; }
         public INode From { get; private set; }
         public INode To { get; private set; }
@@ -32,13 +33,18 @@ namespace Backend
             float requiredSlowdown = 0;
             float progress = Progress;
 
-            Path[0].GetSlowdown(this, progress, 0, roadIndex, ref requiredSlowdown);
+            if (!IsNoding)
+            {
+                Path[0].GetSlowdown(this, progress, 0, roadIndex, ref requiredSlowdown);
+                progress -= Path[0].Length;
+            }
 
             for (var i = 1; i < Path.Count; i++)
             {
-                progress -= Path[i - 1].Length;
                 Path[i].From.GetSlowdown(this, Path[i - 1], Path[i], progress, roadIndex, ref requiredSlowdown);
+                progress -= Path[i].Length;
                 Path[i].GetSlowdown(this, progress, roadIndex, Path[i].CarCount, ref requiredSlowdown);
+                progress -= Path[i].Length;
                 roadIndex += Path[i].CarCount;
             }
 
@@ -75,14 +81,31 @@ namespace Backend
                 }
             }
 
-            if (Progress > Path[0].Length)
+            if (IsNoding)
+            {
+                if (Progress > Path[0].To.GetLength(Path[0], Path[1]))
+                {
+                    Progress -= Path[0].To.GetLength(Path[0], Path[1]);
+                    IsNoding = false;
+                    Path[0].To.RemoveCar(this, Path[0], Path[1]);
+                    Path.RemoveAt(0);
+                    Path[0].AddCar(this);
+                }
+            }
+            else if (Progress > Path[0].Length)
             {
                 Progress -= Path[0].Length;
                 Path[0].RemoveCar(this);
-                Path.RemoveAt(0);
 
-                if (!Complete)
-                    Path[0].AddCar(this);
+                if (Path.Count == 1)
+                {
+                    Path.Clear();
+                }
+                else
+                {
+                    IsNoding = true;
+                    Path[0].To.AddCar(this, Path[0], Path[1]);
+                }
             }
         }
 

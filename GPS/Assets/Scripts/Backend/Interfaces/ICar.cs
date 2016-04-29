@@ -10,6 +10,7 @@ namespace Backend
         float NiceDeceleration { get; set; }
         List<IRoad> Path { get; }
         float Progress { get; set; }
+        bool IsNoding { get; set; }
         float Speed { get; set; }
         INode From { get; }
         INode To { get; }

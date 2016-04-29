@@ -43,9 +43,16 @@ namespace Frontend
             else
             {
                 renderer.enabled = true;
-                var road = car.Path[0];
-                transform.position = Vector2.Lerp(road.From.Position, road.To.Position, car.Progress / road.Length) + new Vector2(road.To.Position.y - road.From.Position.y, road.From.Position.x - road.To.Position.x) / (road.RealLength * 4) * World.RealRoadWidth;
+                transform.position = GetRoadPosition();
             }
+        }
+
+        Vector3 GetRoadPosition()
+        {
+            var road = car.Path[0];
+            var from = road.From.Position;
+            var to = road.To.Position;
+            return Vector2.Lerp(from, to, (car.Progress + World.RoadWidth) / (road.Length + 2 * World.RoadWidth)) + new Vector2(to.y - from.y, from.x - to.x).normalized * World.RealRoadWidth;
         }
 
         void OnMouseUpAsButton()

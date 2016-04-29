@@ -8,8 +8,16 @@ namespace Backend
         Vector2 Position { get; set; }
 
         List<IRoad> Roads { get; }
+        IRoad[] RoadFrom { get; }
+        IRoad[] RoadTo { get; }
 
         void Update(float deltaTime);
+
+        void AddCar(ICar car, IRoad from, IRoad to);
+
+        void RemoveCar(ICar car, IRoad from, IRoad to);
+
+        float GetLength(IRoad from, IRoad to);
 
         void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown);
     }

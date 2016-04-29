@@ -89,51 +89,8 @@ namespace Frontend
             var v = nodeFrom - nodeTo;
             var dir = Mathf.FloorToInt((180 + 45 + Mathf.Atan2(v.x, v.y) * Mathf.Rad2Deg - transform.rotation.eulerAngles.z) / 90) % 4;
 
-            switch (nodeType)
-            {
-                case NodeType.MainRoad:
-                    switch (dir)
-                    {
-                        case 0:
-                            ((NodeMainRoad)node).upFrom = from;
-                            ((NodeMainRoad)node).upTo = to;
-                            break;
-                        case 1:
-                            ((NodeMainRoad)node).rightFrom = from;
-                            ((NodeMainRoad)node).rightTo = to;
-                            break;
-                        case 2:
-                            ((NodeMainRoad)node).downFrom = from;
-                            ((NodeMainRoad)node).downTo = to;
-                            break;
-                        case 3:
-                            ((NodeMainRoad)node).leftFrom = from;
-                            ((NodeMainRoad)node).leftTo = to;
-                            break;
-                    }
-                    break;
-                case NodeType.Light:
-                    switch (dir)
-                    {
-                        case 0:
-                            ((NodeLight)node).upFrom = from;
-                            ((NodeLight)node).upTo = to;
-                            break;
-                        case 1:
-                            ((NodeLight)node).rightFrom = from;
-                            ((NodeLight)node).rightTo = to;
-                            break;
-                        case 2:
-                            ((NodeLight)node).downFrom = from;
-                            ((NodeLight)node).downTo = to;
-                            break;
-                        case 3:
-                            ((NodeLight)node).leftFrom = from;
-                            ((NodeLight)node).leftTo = to;
-                            break;
-                    }
-                    break;
-            }
+            node.RoadFrom[dir] = from;
+            node.RoadTo[dir] = to;
         }
 
         void Update()
@@ -171,10 +128,10 @@ namespace Frontend
             if (nodeType == NodeType.Light)
             {
                 NodeLight nodeLight = (NodeLight) Node;
-                lights.up.enabled = nodeLight.upFrom != null || nodeLight.upTo != null;
-                lights.left.enabled = nodeLight.leftFrom != null || nodeLight.leftTo != null;
-                lights.down.enabled = nodeLight.downFrom != null || nodeLight.downTo != null;
-                lights.right.enabled = nodeLight.rightFrom != null || nodeLight.rightTo != null;
+                lights.up.enabled = nodeLight.RoadFrom[(int)Direction.Up] != null || nodeLight.RoadTo[(int)Direction.Up] != null;
+                lights.left.enabled = nodeLight.RoadFrom[(int)Direction.Left] != null || nodeLight.RoadTo[(int)Direction.Left] != null;
+                lights.down.enabled = nodeLight.RoadFrom[(int)Direction.Down] != null || nodeLight.RoadTo[(int)Direction.Down] != null;
+                lights.right.enabled = nodeLight.RoadFrom[(int)Direction.Right] != null || nodeLight.RoadTo[(int)Direction.Right] != null;
 
                 lights.up.color = lights.down.color = nodeLight.Light ? colorStop : colorStart;
                 lights.left.color = lights.right.color = nodeLight.Light ? colorStart : colorStop;

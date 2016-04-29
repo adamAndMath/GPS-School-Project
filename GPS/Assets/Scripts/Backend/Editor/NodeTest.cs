@@ -60,12 +60,12 @@ public class NodeTest
         node.Roads.Add(roadRightFrom);
         nodeRight.Roads.Add(roadRightTo);
 
-        node.upTo = roadUpTo;
-        node.upFrom = roadUpFrom;
-        node.downTo = roadDownTo;
-        node.downFrom = roadDownFrom;
-        node.rightTo = roadRightTo;
-        node.rightFrom = roadRightFrom;
+        node.RoadTo[(int)Direction.Up] = roadUpTo;
+        node.RoadFrom[(int)Direction.Up] = roadUpFrom;
+        node.RoadTo[(int)Direction.Down] = roadDownTo;
+        node.RoadFrom[(int)Direction.Down] = roadDownFrom;
+        node.RoadTo[(int)Direction.Right] = roadRightTo;
+        node.RoadFrom[(int)Direction.Right] = roadRightFrom;
 
         var car = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };
         var carOther = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };

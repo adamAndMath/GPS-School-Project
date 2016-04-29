@@ -5,49 +5,40 @@ namespace Backend
 {
     public class NodeMainRoad : Node
     {
-        public IRoad downFrom;
-        public IRoad downTo;
-        public IRoad upFrom;
-        public IRoad upTo;
-        public IRoad rightFrom;
-        public IRoad rightTo;
-        public IRoad leftFrom;
-        public IRoad leftTo;
-
         public NodeMainRoad(Vector2 position) : base(position) { }
 
         public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {
             if (to == null) return;
 
-            if (from == downTo)
+            if (from == RoadTo[(int)Direction.Down])
             {
-                if (to != leftFrom || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, upTo) && HasSpaceFromFront(car, progress, to)))
+                if (to != RoadFrom[(int)Direction.Left] || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, RoadTo[(int)Direction.Up]) && HasSpaceFromFront(car, progress, to)))
                     return;
             }
-            else if (from == upTo)
+            else if (from == RoadTo[(int)Direction.Up])
             {
-                if (to != rightFrom || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromFront(car, progress, to)))
+                if (to != RoadFrom[(int)Direction.Right] || (HasSpaceFromSide(car, progress - World.RoadWidth / 2, RoadTo[(int)Direction.Down]) && HasSpaceFromFront(car, progress, to)))
                     return;
             }
-            else if (from == rightTo)
+            else if (from == RoadTo[(int)Direction.Right])
             {
-                if (to == upFrom)
+                if (to == RoadFrom[(int)Direction.Up])
                 {
-                    if (HasSpaceFromSide(car, progress, downTo) && HasSpaceFromFront(car, progress, to))
+                    if (HasSpaceFromSide(car, progress, RoadTo[(int)Direction.Down]) && HasSpaceFromFront(car, progress, to))
                         return;
                 }
-                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, upTo) && HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromFront(car, progress, to))
+                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, RoadTo[(int)Direction.Up]) && HasSpaceFromSide(car, progress - World.RoadWidth / 2, RoadTo[(int)Direction.Down]) && HasSpaceFromFront(car, progress, to))
                     return;
             }
-            else if (from == leftTo)
+            else if (from == RoadTo[(int)Direction.Left])
             {
-                if (to == downFrom)
+                if (to == RoadFrom[(int)Direction.Down])
                 {
-                    if (HasSpaceFromSide(car, progress, upTo) && HasSpaceFromFront(car, progress, to))
+                    if (HasSpaceFromSide(car, progress, RoadTo[(int)Direction.Up]) && HasSpaceFromFront(car, progress, to))
                         return;
                 }
-                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, downTo) && HasSpaceFromSide(car, progress, upTo) && HasSpaceFromFront(car, progress - World.RoadWidth / 2, to))
+                else if (HasSpaceFromSide(car, progress - World.RoadWidth / 2, RoadTo[(int)Direction.Down]) && HasSpaceFromSide(car, progress, RoadTo[(int)Direction.Up]) && HasSpaceFromFront(car, progress - World.RoadWidth / 2, to))
                     return;
             }
 

@@ -44,14 +44,15 @@ public class RoadTest
         var to = new Node(new Vector2(3, 4));
         var newRoad = new Road(from, to);
         World.WorldScale = 2;
+        World.RoadWidth = 1;
 
         //Act
         //None
         
         //Assert
         //The roads length is the distance between the nodes
-        Assert.AreEqual(5, newRoad.RealLength);
-        Assert.AreEqual(10, newRoad.Length);
+        Assert.AreEqual(4, newRoad.RealLength);
+        Assert.AreEqual(8, newRoad.Length);
     }
 
     [Test]
