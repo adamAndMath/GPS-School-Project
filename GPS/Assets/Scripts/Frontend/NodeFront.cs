@@ -1,6 +1,6 @@
 ﻿using Backend;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Frontend
 {
@@ -8,15 +8,41 @@ namespace Frontend
     {
         public static readonly List<NodeFront> Nodes = new List<NodeFront>();
 
+        public new SpriteRenderer renderer;
+        public Lights lights;
+        public NodeSprites sprites;
         public NodeType nodeType;
         public float spawnRate;
+        public Color colorStart;
+        public Color colorStop;
         public NodeLight.LightSequence lightSequence;
 
         private float timer;
         private INode node;
+        private int roadCount;
+        private Vector2 direction;
+
         public INode Node { get { return node; } }
 
         public enum NodeType { Turn, MainRoad, Light }
+
+        [System.Serializable]
+        public struct NodeSprites
+        {
+            public Sprite straight;
+            public Sprite turn;
+            public Sprite tCross;
+            public Sprite cross;
+        }
+
+        [System.Serializable]
+        public struct Lights
+        {
+            public SpriteRenderer up;
+            public SpriteRenderer left;
+            public SpriteRenderer down;
+            public SpriteRenderer right;
+        }
 
         void OnEnable()
         {
@@ -39,15 +65,24 @@ namespace Frontend
                     node = new NodeMainRoad(transform.position);
                     break;
                 case NodeType.Light:
-                    node = new NodeLight(transform.position, new NodeLight.LightSequence());
+                    node = new NodeLight(transform.position, lightSequence);
                     break;
             }
         }
 
         public void AddRoad(IRoad from, IRoad to)
         {
-            if (from != null)
+            roadCount++;
+
+            if (from == null)
+            {
+                direction += (to.From.Position - to.To.Position).normalized;
+            }
+            else
+            {
                 node.Roads.Add(from);
+                direction += (from.To.Position - from.From.Position).normalized;
+            }
 
             var nodeFrom = from == null ? to.To.Position : from.From.Position;
             var nodeTo = from == null ? to.From.Position : from.To.Position;
@@ -105,6 +140,45 @@ namespace Frontend
         {
             if (node.Position != (Vector2) transform.position)
                 node.Position = transform.position;
+
+            transform.localScale = new Vector3(World.RealRoadWidth * 2, World.RealRoadWidth * 2, 1);
+
+            switch (roadCount)
+            {
+                case 1:
+                    renderer.sprite = sprites.straight;
+                    break;
+                case 2:
+                    if (direction == Vector2.zero)
+                    {
+                        renderer.sprite = sprites.straight;
+                    }
+                    else
+                    {
+                        renderer.sprite = sprites.turn;
+                        renderer.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction)*Quaternion.Euler(0, 0, -45);
+                    }
+                    break;
+                case 3:
+                    renderer.sprite = sprites.tCross;
+                    renderer.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+                    break;
+                default:
+                    renderer.sprite = sprites.cross;
+                    break;
+            }
+
+            if (nodeType == NodeType.Light)
+            {
+                NodeLight nodeLight = (NodeLight) Node;
+                lights.up.enabled = nodeLight.upFrom != null || nodeLight.upTo != null;
+                lights.left.enabled = nodeLight.leftFrom != null || nodeLight.leftTo != null;
+                lights.down.enabled = nodeLight.downFrom != null || nodeLight.downTo != null;
+                lights.right.enabled = nodeLight.rightFrom != null || nodeLight.rightTo != null;
+
+                lights.up.color = lights.down.color = nodeLight.Light ? colorStop : colorStart;
+                lights.left.color = lights.right.color = nodeLight.Light ? colorStart : colorStop;
+            }
 
             if (spawnRate > 0)
             {

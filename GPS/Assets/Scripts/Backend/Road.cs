@@ -10,7 +10,7 @@ namespace Backend
         public INode From { get; private set; }
         public INode To { get; private set; }
         public float SpeedLimit { get; set; }
-        public float RealLength { get { return (To.Position - From.Position).magnitude; } }
+        public float RealLength { get { return (To.Position - From.Position).magnitude - 2*World.RealRoadWidth; } }
         public float Length { get { return RealLength * World.WorldScale; } }
 
         public int CarCount { get { return cars.Count; } }

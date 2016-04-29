@@ -18,6 +18,8 @@ namespace Backend
         private bool light;
         private float timer;
 
+        public bool Light { get { return light; } }
+
         [System.Serializable]
         public struct LightSequence
         {
