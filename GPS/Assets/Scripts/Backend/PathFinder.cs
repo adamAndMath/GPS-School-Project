@@ -102,6 +102,8 @@ namespace Backend
                                 return;
                             }
                         }
+
+                        open.Insert(0, o);
                     }
 
                     return;
