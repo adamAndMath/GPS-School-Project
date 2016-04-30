@@ -89,20 +89,10 @@ namespace Backend
                         open[i].parent = parent;
                         open[i].road = road;
                         var o = open[i];
-                        open.Remove(o);
 
-                        if (i == 0 || open[i - 1].T < o.T)
-                        {
-                            if (i == open.Count)
-                            {
-                                open.Add(o);
-                            }
-                            else
-                            {
-                                open.Insert(i, o);
-                            }
-                            return;
-                        }
+                        if (i != 0 && open[i - 1].T >= o.T) return;
+                        
+                        open.Remove(o);
 
                         for (--i; i >= 0; i--)
                         {
