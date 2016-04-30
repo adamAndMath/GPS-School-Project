@@ -79,7 +79,41 @@ namespace Backend
         {
             if (closed.Contains(road.To)) return;
 
-            for (var i = 0; i < open.Count; i++)
+            var old = open.FirstOrDefault(o => o.node == road.To);
+
+            if (old != null)
+            {
+                if (old.timeTo > timeTo)
+                {
+                    var oldIndex = open.IndexOf(old);
+                    old.timeTo = timeTo;
+                    old.parent = parent;
+                    old.road = road;
+
+                    if (oldIndex != 0 && open[oldIndex - 1].T >= old.T) return;
+
+                    open.RemoveAt(oldIndex);
+
+                    int newIndex = open.FindIndex(o => o.T > old.T);
+
+                    if (newIndex == -1)
+                        newIndex = 0;
+
+                    open.Insert(newIndex, old);
+                }
+
+                return;
+            }
+
+            var op = new OpenPath(parent, car, road, timeTo, goal);
+            var index = open.FindIndex(o => o.T > op.T);
+
+            if (index == -1)
+                open.Add(op);
+            else
+                open.Insert(index, op);
+
+            /*for (var i = 0; i < open.Count; i++)
             {
                 if (open[i].node == road.To)
                 {
@@ -122,7 +156,7 @@ namespace Backend
                 }
             }
 
-            open.Add(op);
+            open.Add(op);*/
         }
     }
 }
