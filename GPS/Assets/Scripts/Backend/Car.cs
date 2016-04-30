@@ -42,7 +42,7 @@ namespace Backend
             for (var i = 1; i < Path.Count; i++)
             {
                 Path[i].From.GetSlowdown(this, Path[i - 1], Path[i], progress, roadIndex, ref requiredSlowdown);
-                progress -= Path[i].Length;
+                progress -= Path[i].From.GetLength(Path[i - 1], Path[i]);
                 Path[i].GetSlowdown(this, progress, roadIndex, Path[i].CarCount, ref requiredSlowdown);
                 progress -= Path[i].Length;
                 roadIndex += Path[i].CarCount;
@@ -121,7 +121,6 @@ namespace Backend
 
         public float TimeTo(float distance)
         {
-            //return distance / Speed;
             return Mathf.Sqrt(2 * distance / Acceleration + Mathf.Pow(Speed / Acceleration, 2)) - Speed / Acceleration;
         }
 
