@@ -9,8 +9,8 @@ public class RoadTest
     public void InitTest()
     {
         //Arrange
-        var from = new Node(Vector2.zero);
-        var to = new Node(Vector2.zero);
+        var from = new Node(Vector2.zero, Direction.Up);
+        var to = new Node(Vector2.zero, Direction.Up);
 
         //Act
         //Try to create a road
@@ -26,8 +26,8 @@ public class RoadTest
     public void ToStringTest()
     {
         //Arrange
-        var from = new Node(Vector2.zero);
-        var to = new Node(Vector2.right);
+        var from = new Node(Vector2.zero, Direction.Up);
+        var to = new Node(Vector2.right, Direction.Up);
 
         //Act
         var road = new Road(from, to);
@@ -40,8 +40,8 @@ public class RoadTest
     public void LengthTest()
     {
         //Arrange
-        var from = new Node(Vector2.zero);
-        var to = new Node(new Vector2(3, 4));
+        var from = new Node(Vector2.zero, Direction.Up);
+        var to = new Node(new Vector2(3, 4), Direction.Up);
         var newRoad = new Road(from, to);
         World.WorldScale = 2;
         World.RoadWidth = 1;
@@ -59,8 +59,8 @@ public class RoadTest
     public void SlowdownSpeedLimitTest()
     {
         //Arrange
-        var from = new Node(Vector2.zero);
-        var to = new Node(Vector2.right);
+        var from = new Node(Vector2.zero, Direction.Up);
+        var to = new Node(Vector2.right, Direction.Up);
         var road = new Road(from, to) { SpeedLimit = 1 };
         var car = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };
         road.AddCar(car);
@@ -89,8 +89,8 @@ public class RoadTest
     public void SlowdownOtherCarTest()
     {
         //Arrange
-        var from = new Node(Vector2.zero);
-        var to = new Node(Vector2.right);
+        var from = new Node(Vector2.zero, Direction.Up);
+        var to = new Node(Vector2.right, Direction.Up);
         var road = new Road(from, to) { SpeedLimit = 100 };
         var car = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };
         var otherCar = new Car();

@@ -15,6 +15,8 @@ namespace Frontend
         public readonly List<CarFront> activeCars = new List<CarFront>();
 
         public Grapher graph;
+        public Transform sellectedFrom;
+        public Transform sellectedTo;
         public CarLabel carLabel;
         public CarGraphType graphType;
         public float worldScale = 1;
@@ -42,6 +44,8 @@ namespace Frontend
                 var pre = sellectedCar;
                 sellectedCar = value;
                 carData.Clear();
+                sellectedFrom.gameObject.SetActive(value);
+                sellectedTo.gameObject.SetActive(value);
 
                 if (pre) pre.UpdateColor();
                 if (value) value.UpdateColor();
@@ -141,6 +145,10 @@ namespace Frontend
                                 break;
                         }
                     }
+
+                    sellectedFrom.position = SellectedCar.car.From.Position;
+                    sellectedTo.position = SellectedCar.car.To.Position;
+                    sellectedFrom.localScale = sellectedTo.localScale = Vector3.one * (2 + Mathf.Sin(Time.timeSinceLevelLoad * 2) * 0.4F) * World.RealRoadWidth;
                 }
             }
         }

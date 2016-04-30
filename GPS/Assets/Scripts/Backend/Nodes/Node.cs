@@ -13,11 +13,13 @@ namespace Backend
         public IRoad[] RoadTo { get; private set; }
 
         public Vector2 Position { get; set; }
+        public Direction Rotation { get; set; }
         public List<IRoad> Roads { get { return road; } }
 
-        public Node(Vector2 position)
+        public Node(Vector2 position, Direction rotation)
         {
             Position = position;
+            Rotation = rotation;
             cars = new Dictionary<Direction, Dictionary<Direction, List<ICar>>>();
             RoadFrom = new IRoad[4];
             RoadTo = new IRoad[4];
@@ -38,20 +40,30 @@ namespace Backend
         {
 
         }
+        public Direction GetRoadDirection(IRoad road)
+        {
+            for (int dir = 0; dir < 4; dir++)
+            {
+                if (road == RoadFrom[dir] || road == RoadTo[dir])
+                    return (Direction)dir;
+            }
+
+            throw new ArgumentException();
+        }
 
         public virtual void AddCar(ICar car, IRoad from, IRoad to)
         {
-            cars[(Direction)Array.IndexOf(RoadTo, from)][(Direction)Array.IndexOf(RoadFrom, to)].Add(car);
+            cars[GetRoadDirection(from)][GetRoadDirection(to)].Add(car);
         }
 
         public virtual void RemoveCar(ICar car, IRoad from, IRoad to)
         {
-            cars[(Direction)Array.IndexOf(RoadTo, from)][(Direction)Array.IndexOf(RoadFrom, to)].Remove(car);
+            cars[GetRoadDirection(from)][GetRoadDirection(to)].Remove(car);
         }
 
         public virtual float GetLength(IRoad from, IRoad to)
         {
-            var dir = (4 + Array.IndexOf(RoadFrom, to) - Array.IndexOf(RoadTo, from)) % 4;
+            var dir = (4 + GetRoadDirection(to) - GetRoadDirection(from)) % 4;
 
             switch (dir)
             {

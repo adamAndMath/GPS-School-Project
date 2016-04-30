@@ -14,7 +14,7 @@ public class NodeTest
         //Act
         //Try to create a node
         var position = new Vector2(4, 6.25F);
-        var newNode = new Node(position);
+        var newNode = new Node(position, Direction.Up);
 
         //Assert
         //The node has a the position
@@ -28,7 +28,7 @@ public class NodeTest
         var pos = new Vector2(3.5F, 7);
 
         //Act
-        var node = new Node(pos);
+        var node = new Node(pos, Direction.Up);
 
         //Assert
         Assert.AreEqual(pos.ToString(), node.ToString());
@@ -41,10 +41,10 @@ public class NodeTest
         World.CarDistance = 1;
         World.WorldScale = 1;
 
-        var node = new NodeMainRoad(new Vector2(0, 0));
-        var nodeUp = new Node(new Vector2(0, 1));
-        var nodeDown = new Node(new Vector2(0, -1));
-        var nodeRight = new Node(new Vector2(1, 0));
+        var node = new NodeMainRoad(new Vector2(0, 0), Direction.Up);
+        var nodeUp = new Node(new Vector2(0, 1), Direction.Up);
+        var nodeDown = new Node(new Vector2(0, -1), Direction.Up);
+        var nodeRight = new Node(new Vector2(1, 0), Direction.Up);
 
         var roadUpTo = new Road(nodeUp, node);
         var roadUpFrom = new Road(node, nodeUp);

@@ -12,8 +12,8 @@ public class PathFinderTest
         //Arrange
         var pathfinder = new PathFinder();
         var car = new Car();
-        var node0 = new Node(Vector2.zero);
-        var node1 = new Node(Vector2.right);
+        var node0 = new Node(Vector2.zero, Direction.Up);
+        var node1 = new Node(Vector2.right, Direction.Up);
         var road0 = new Road(node0, node1);
         node0.Roads.Add(road0);
 
@@ -32,12 +32,12 @@ public class PathFinderTest
         //Arrange
         var pathfinder = new PathFinder();
         var car = new Car();
-        var node0 = new Node(Vector2.zero);
-        var node1 = new Node(Vector2.right);
-        var node2 = new Node(Vector2.right * 2);
-        var node3 = new Node(Vector2.right * 3);
-        var node4 = new Node(Vector2.right * 4);
-        var node5 = new Node(Vector2.right * 5);
+        var node0 = new Node(Vector2.zero, Direction.Up);
+        var node1 = new Node(Vector2.right, Direction.Up);
+        var node2 = new Node(Vector2.right * 2, Direction.Up);
+        var node3 = new Node(Vector2.right * 3, Direction.Up);
+        var node4 = new Node(Vector2.right * 4, Direction.Up);
+        var node5 = new Node(Vector2.right * 5, Direction.Up);
         var road0 = new Road(node0, node1);
         var road1 = new Road(node1, node2);
         var road2 = new Road(node2, node3);
@@ -64,9 +64,9 @@ public class PathFinderTest
         //Arrange
         var pathfinder = new PathFinder();
         var car = new Car();
-        var node0 = new Node(Vector2.zero);
-        var node1 = new Node(Vector2.right);
-        var node2 = new Node(Vector2.up);
+        var node0 = new Node(Vector2.zero, Direction.Up);
+        var node1 = new Node(Vector2.right, Direction.Up);
+        var node2 = new Node(Vector2.up, Direction.Up);
         var road0 = new Road(node0, node1);
         var road1 = new Road(node1, node0);
         node0.Roads.Add(road0);
@@ -84,10 +84,10 @@ public class PathFinderTest
         //Arrange
         var pathfinder = new PathFinder();
         var car = new Car();
-        var node0 = new Node(new Vector2(0, 0));
-        var node1 = new Node(new Vector2(2, 0));
-        var node2 = new Node(new Vector2(0, 1));
-        var node3 = new Node(new Vector2(1, 1));
+        var node0 = new Node(new Vector2(0, 0), Direction.Up);
+        var node1 = new Node(new Vector2(2, 0), Direction.Up);
+        var node2 = new Node(new Vector2(0, 1), Direction.Up);
+        var node3 = new Node(new Vector2(1, 1), Direction.Up);
 
         var road0 = new Road(node0, node1);
         var road1 = new Road(node0, node2);
@@ -112,18 +112,18 @@ public class PathFinderTest
         var pathfinder = new PathFinder();
         var car = new Car();
 
-        var node0 = new Node(new Vector2(0, 0));
-        var node1 = new Node(new Vector2(0, 4));
-        var node2 = new Node(new Vector2(-4, 4));
-        var node3 = new Node(new Vector2(-4, 0));
-        var node4 = new Node(new Vector2(-4, 8));
-        var node5 = new Node(new Vector2(4, 0));
-        var node6 = new Node(new Vector2(4, -4));
-        var node7 = new Node(new Vector2(8, -4));
-        var node8 = new Node(new Vector2(8, 8));
-        var node9 = new Node(new Vector2(-8, 8));
-        var node10 = new Node(new Vector2(-8, -4));
-        var node11 = new Node(new Vector2(0, -4));
+        var node0 = new Node(new Vector2(0, 0), Direction.Up);
+        var node1 = new Node(new Vector2(0, 4), Direction.Up);
+        var node2 = new Node(new Vector2(-4, 4), Direction.Up);
+        var node3 = new Node(new Vector2(-4, 0), Direction.Up);
+        var node4 = new Node(new Vector2(-4, 8), Direction.Up);
+        var node5 = new Node(new Vector2(4, 0), Direction.Up);
+        var node6 = new Node(new Vector2(4, -4), Direction.Up);
+        var node7 = new Node(new Vector2(8, -4), Direction.Up);
+        var node8 = new Node(new Vector2(8, 8), Direction.Up);
+        var node9 = new Node(new Vector2(-8, 8), Direction.Up);
+        var node10 = new Node(new Vector2(-8, -4), Direction.Up);
+        var node11 = new Node(new Vector2(0, -4), Direction.Up);
 
         var road0 = new Road(node0, node1);
         var road0B = new Road(node1, node0);

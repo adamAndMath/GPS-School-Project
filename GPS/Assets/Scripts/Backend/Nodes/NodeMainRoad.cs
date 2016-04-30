@@ -5,7 +5,7 @@ namespace Backend
 {
     public class NodeMainRoad : Node
     {
-        public NodeMainRoad(Vector2 position) : base(position) { }
+        public NodeMainRoad(Vector2 position, Direction rotation) : base(position, rotation) { }
 
         public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {

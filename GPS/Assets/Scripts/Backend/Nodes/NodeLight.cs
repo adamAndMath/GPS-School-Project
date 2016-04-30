@@ -24,7 +24,7 @@ namespace Backend
             }
         }
 
-        public NodeLight(Vector2 position, LightSequence sequence) : base(position)
+        public NodeLight(Vector2 position, Direction rotation, LightSequence sequence) : base(position, rotation)
         {
             this.sequence = sequence;
             timer = light ? sequence.timeHorizontal : sequence.timeVertical;

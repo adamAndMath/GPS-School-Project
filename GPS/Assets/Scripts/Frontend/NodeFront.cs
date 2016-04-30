@@ -56,16 +56,18 @@ namespace Frontend
 
         void Start()
         {
+            Direction dir = (Direction)Mathf.RoundToInt(transform.rotation.eulerAngles.z / 90);
+
             switch (nodeType)
             {
                 case NodeType.Turn:
-                    node = new Node(transform.position);
+                    node = new Node(transform.position, dir);
                     break;
                 case NodeType.MainRoad:
-                    node = new NodeMainRoad(transform.position);
+                    node = new NodeMainRoad(transform.position, dir);
                     break;
                 case NodeType.Light:
-                    node = new NodeLight(transform.position, lightSequence);
+                    node = new NodeLight(transform.position, dir, lightSequence);
                     break;
             }
         }
