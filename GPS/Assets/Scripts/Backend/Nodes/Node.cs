@@ -88,14 +88,12 @@ namespace Backend
                 switch (dif)
                 {
                     case 1:
-                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 1) % 4))
-                         && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4))
+                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4))
                          && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 3) % 4)))
                             return;
                         break;
                     case 2:
-                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 1) % 4))
-                         && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 3) % 4)))
+                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 3) % 4)))
                             return;
                         break;
                     case 3: return; //Allways allowed right

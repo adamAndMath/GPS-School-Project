@@ -84,6 +84,7 @@ public class NodeTest
         //Arrange
         World.CarDistance = 1;
         World.WorldScale = 1;
+        World.RoadWidth = 1;
 
         var node = new NodeMainRoad(new Vector2(0, 0), Direction.Up);
         var nodeUp = new Node(new Vector2(0, 1), Direction.Up);
@@ -118,6 +119,7 @@ public class NodeTest
         roadDownTo.AddCar(carOther);
         car.Progress = roadUpTo.Length;
         carOther.Progress = roadDownTo.Length;
+        carOther.Init(nodeDown, nodeUp);
 
         //Act
         float requiredSlowdown = 0;

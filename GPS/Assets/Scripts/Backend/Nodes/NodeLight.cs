@@ -43,7 +43,9 @@ namespace Backend
 
         public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {
-            if (light == (from == RoadTo[(int)Direction.Up] || from == RoadTo[(int)Direction.Down]))
+            var dir = GetRoadDirection(from);
+
+            if ((!car.IsNoding || progress < 0) && light == (((int)dir % 2) == 0))
             {
                 if (-progress-1 < car.SafeDistance(car.Speed))
                 {
@@ -52,6 +54,34 @@ namespace Backend
                 else
                 {
                     requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress-1));
+                }
+            }
+            else
+            {
+                var dirTo = GetRoadDirection(to);
+                var dif = (4 + dirTo - dir) % 4;
+                var distance = GetLength(from, to) - progress;
+
+                if (HasSpaceFromFront(car, dirTo))
+                {
+                    switch (dif)
+                    {
+                        case 1:
+                            if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4)))
+                                return;
+                            break;
+                        case 2: return; //Allways allowed straight
+                        case 3: return; //Allways allowed right
+                    }
+                }
+
+                if (-progress < car.SafeDistance(car.Speed))
+                {
+                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
+                }
+                else
+                {
+                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress));
                 }
             }
         }
