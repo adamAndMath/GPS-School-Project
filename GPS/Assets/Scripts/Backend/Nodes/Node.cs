@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Backend
@@ -77,7 +78,75 @@ namespace Backend
 
         public virtual void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
         {
+            var dir = GetRoadDirection(from);
+            var dirTo = GetRoadDirection(to);
+            var dif = (4 + dirTo - dir) % 4;
+            var distance = GetLength(from, to) - progress;
 
+            if (HasSpaceFromFront(car, dirTo))
+            {
+                switch (dif)
+                {
+                    case 1:
+                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 1) % 4))
+                         && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4))
+                         && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 3) % 4)))
+                            return;
+                        break;
+                    case 2:
+                        if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 1) % 4))
+                         && HasSpaceFromSide(car, distance, (Direction)(((int)dir + 3) % 4)))
+                            return;
+                        break;
+                    case 3: return; //Allways allowed right
+                }
+            }
+
+            if (-progress < car.SafeDistance(car.Speed))
+            {
+                requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
+            }
+            else
+            {
+                requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress));
+            }
+        }
+
+        protected bool HasSpaceFromSide(ICar car, float distanceLeft, Direction dir)
+        {
+            if (cars[dir][(Direction)(((int)dir + 2) % 4)].Count != 0)
+            {
+                return false;
+            }
+
+            var road = RoadTo[(int)dir];
+
+            if (road == null)
+            {
+                return true;
+            }
+
+            var relevantCars = road.Cars.Where(c => c.Path.Count > 1)
+                                        .Where(c => ((4 + GetRoadDirection(c.Path[1]) - dir) % 4) == 2)
+                                        .ToArray();
+
+            if (relevantCars.Length == 0)
+            {
+                return true;
+            }
+
+            return relevantCars[0].TimeTo(road.Length - relevantCars[0].Progress) > car.TimeTo(distanceLeft);
+        }
+
+        protected bool HasSpaceFromFront(ICar car, Direction dir)
+        {
+            var road = RoadFrom[(int)dir];
+
+            if (road.CarCount == 0) return true;
+
+            var c = road[road.CarCount - 1];
+
+            return c.Progress - car.SafeDistance(Mathf.Min(car.Speed, c.Speed)) > World.RoadWidth;
         }
 
         public override string ToString()

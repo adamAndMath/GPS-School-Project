@@ -1,4 +1,5 @@
 ﻿using Backend;
+using System;
 using UnityEngine;
 using UnityEditor;
 using NUnit.Framework;
@@ -32,6 +33,49 @@ public class NodeTest
 
         //Assert
         Assert.AreEqual(pos.ToString(), node.ToString());
+    }
+
+    [Test]
+    public void SlowdownTestTurn()
+    {
+        //Arrange
+        World.CarDistance = 1;
+        World.WorldScale = 1;
+        World.RoadWidth = 1;
+
+        INode nodeCenter = new Node(Vector2.zero, Direction.Up);
+        INode nodeLeft = new Node(Vector2.left, Direction.Up);
+        INode nodeDown = new Node(Vector2.down, Direction.Up);
+
+        IRoad roadLeftFrom = new Road(nodeCenter, nodeLeft);
+        IRoad roadLeftTo = new Road(nodeLeft, nodeCenter);
+        IRoad roadDownFrom = new Road(nodeCenter, nodeDown);
+        IRoad roadDownTo = new Road(nodeDown, nodeCenter);
+
+        ICar carLeft = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1, Speed = 1 };
+        ICar carDown = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1, Speed = 1 };
+
+        nodeCenter.Roads.Add(roadLeftFrom);
+        nodeCenter.Roads.Add(roadDownFrom);
+        nodeLeft.Roads.Add(roadLeftTo);
+        nodeDown.Roads.Add(roadDownTo);
+
+        nodeCenter.RoadTo[(int)Direction.Left] = roadLeftTo;
+        nodeCenter.RoadFrom[(int)Direction.Left] = roadLeftFrom;
+        nodeCenter.RoadTo[(int)Direction.Down] = roadDownTo;
+        nodeCenter.RoadFrom[(int)Direction.Down] = roadDownFrom;
+
+        roadLeftTo.AddCar(carLeft);
+        roadDownTo.AddCar(carDown);
+
+        carLeft.Init(nodeLeft, nodeDown);
+
+        //Act
+        float requiredSlowdown = 0;
+        nodeCenter.GetSlowdown(carDown, roadDownTo, roadLeftFrom, carDown.Progress, 0, ref requiredSlowdown);
+
+        //Assert
+        Assert.AreEqual(0, requiredSlowdown);
     }
 
     [Test]

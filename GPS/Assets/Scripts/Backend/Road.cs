@@ -13,6 +13,7 @@ namespace Backend
         public float RealLength { get { return (To.Position - From.Position).magnitude - 2*World.RealRoadWidth; } }
         public float Length { get { return RealLength * World.WorldScale; } }
 
+        public IEnumerable<ICar> Cars { get { return cars; } }
         public int CarCount { get { return cars.Count; } }
 
         public ICar this[int i] { get { return cars[i]; } }

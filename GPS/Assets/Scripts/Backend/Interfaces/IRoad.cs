@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace Backend
 {
     public interface IRoad
@@ -9,6 +10,7 @@ namespace Backend
         float RealLength { get; }
         float Length { get; }
 
+        IEnumerable<ICar> Cars { get; }
         int CarCount { get; }
         ICar this[int i] { get; }
 
