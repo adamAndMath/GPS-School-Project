@@ -112,51 +112,6 @@ namespace Backend
                 open.Add(op);
             else
                 open.Insert(index, op);
-
-            /*for (var i = 0; i < open.Count; i++)
-            {
-                if (open[i].node == road.To)
-                {
-                    if (open[i].timeTo > timeTo)
-                    {
-                        open[i].timeTo = timeTo;
-                        open[i].parent = parent;
-                        open[i].road = road;
-                        var o = open[i];
-
-                        if (i != 0 && open[i - 1].T >= o.T) return;
-                        
-                        open.Remove(o);
-
-                        for (--i; i >= 0; i--)
-                        {
-                            if (open[i].T > o.T)
-                            {
-                                open.Insert(i + 1, o);
-                                return;
-                            }
-                        }
-
-                        open.Insert(0, o);
-                    }
-
-                    return;
-                }
-            }
-
-            var op = new OpenPath(parent, car, road, timeTo, goal);
-
-            for (var i = 0; i < open.Count; i++)
-            {
-                if (open[i].T > op.T)
-                {
-                    open.Insert(i, op);
-
-                    return;
-                }
-            }
-
-            open.Add(op);*/
         }
     }
 }
