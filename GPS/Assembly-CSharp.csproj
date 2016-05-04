@@ -45,8 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Backend\Car.cs" />
-     <Compile Include="Assets\Scripts\Backend\CarGPS.cs" />
+     <Compile Include="Assets\Scripts\Backend\Cars\Car.cs" />
+     <Compile Include="Assets\Scripts\Backend\Cars\CarAPI.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\ICar.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\INode.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\IPathFinder.cs" />

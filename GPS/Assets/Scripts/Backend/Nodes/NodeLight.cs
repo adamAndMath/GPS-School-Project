@@ -1,87 +1,91 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Backend
+namespace CTD_Sim
 {
-    public class NodeLight : Node
+    namespace Backend
     {
-        private readonly LightSequence sequence;
-        private bool light;
-        private float timer;
-
-        public bool Light { get { return light; } }
-
-        [System.Serializable]
-        public struct LightSequence
+        public class NodeLight : Node
         {
-            public float timeHorizontal;
-            public float timeVertical;
+            private readonly LightSequence sequence;
+            private bool light;
+            private float timer;
 
-            public LightSequence(float timeHorizontal, float timeVertical)
+            public bool Light { get { return light; } }
+
+            [System.Serializable]
+            public struct LightSequence
             {
-                this.timeHorizontal = timeHorizontal;
-                this.timeVertical = timeVertical;
-            }
-        }
+                public float timeHorizontal;
+                public float timeVertical;
 
-        public NodeLight(Vector2 position, Direction rotation, LightSequence sequence) : base(position, rotation)
-        {
-            this.sequence = sequence;
-            timer = light ? sequence.timeHorizontal : sequence.timeVertical;
-        }
-
-        public override void Update(float deltaTime)
-        {
-            timer -= deltaTime;
-
-            if (timer <= 0)
-            {
-                light = !light;
-                timer += light ? sequence.timeHorizontal : sequence.timeVertical;
-            }
-        }
-
-        public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
-        {
-            var dir = GetRoadDirection(from);
-
-            if ((!car.IsNoding || progress < 0) && light == (((int)dir % 2) == 0))
-            {
-                if (-progress-1 < car.SafeDistance(car.Speed))
+                public LightSequence(float timeHorizontal, float timeVertical)
                 {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
-                }
-                else
-                {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress-1));
+                    this.timeHorizontal = timeHorizontal;
+                    this.timeVertical = timeVertical;
                 }
             }
-            else
-            {
-                var dirTo = GetRoadDirection(to);
-                var dif = (4 + dirTo - dir) % 4;
-                var distance = GetLength(from, to) - progress;
 
-                if (HasSpaceFromFront(car, dirTo))
+            public NodeLight(Vector2 position, Direction rotation, LightSequence sequence)
+                : base(position, rotation)
+            {
+                this.sequence = sequence;
+                timer = light ? sequence.timeHorizontal : sequence.timeVertical;
+            }
+
+            public override void Update(float deltaTime)
+            {
+                timer -= deltaTime;
+
+                if (timer <= 0)
                 {
-                    switch (dif)
+                    light = !light;
+                    timer += light ? sequence.timeHorizontal : sequence.timeVertical;
+                }
+            }
+
+            public override void GetSlowdown(ICar car, IRoad from, IRoad to, float progress, int index, ref float requiredSlowdown)
+            {
+                var dir = GetRoadDirection(from);
+
+                if ((!car.IsNoding || progress < 0) && light == (((int)dir % 2) == 0))
+                {
+                    if (-progress - 1 < car.SafeDistance(car.Speed))
                     {
-                        case 1:
-                            if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4)))
-                                return;
-                            break;
-                        case 2: return; //Allways allowed straight
-                        case 3: return; //Allways allowed right
+                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
+                    }
+                    else
+                    {
+                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress - 1));
                     }
                 }
-
-                if (-progress < car.SafeDistance(car.Speed))
-                {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
-                }
                 else
                 {
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress));
+                    var dirTo = GetRoadDirection(to);
+                    var dif = (4 + dirTo - dir) % 4;
+                    var distance = GetLength(from, to) - progress;
+
+                    if (HasSpaceFromFront(car, dirTo))
+                    {
+                        switch (dif)
+                        {
+                            case 1:
+                                if (HasSpaceFromSide(car, distance, (Direction)(((int)dir + 2) % 4)))
+                                    return;
+                                break;
+                            case 2: return; //Allways allowed straight
+                            case 3: return; //Allways allowed right
+                        }
+                    }
+
+                    if (-progress < car.SafeDistance(car.Speed))
+                    {
+                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.Deceleration);
+                    }
+                    else
+                    {
+                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(0, -progress));
+                    }
                 }
             }
         }

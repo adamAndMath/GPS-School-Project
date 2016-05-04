@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Backend
+namespace CTD_Sim
 {
-    public interface IPathFinder
+    namespace Backend
     {
-        List<IRoad> FindPath(ICar car, INode from, INode to);
+        public interface IPathFinder
+        {
+            List<IRoad> FindPath(ICar car, INode from, INode to);
+        }
     }
 }
