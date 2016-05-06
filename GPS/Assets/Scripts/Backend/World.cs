@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CTD;
+using System;
 
 namespace CTD_Sim
 {
@@ -22,6 +23,7 @@ namespace CTD_Sim
             }
 
             private readonly IPathFinder pathfinder = new PathFinder();
+            private readonly CTDManager manager = new CTDManager();
             private float worldScale = 1;
             private float timeScale = 1;
             private float roadWidth = 4;
@@ -31,6 +33,7 @@ namespace CTD_Sim
             private int lookForward = 3;
 
             public static IPathFinder Pathfinder { get { return Instance.pathfinder; } }
+            public static CTDManager CTDManager { get { return Instance.manager; } }
             public static float WorldScale { get { return Instance.worldScale; } set { Instance.worldScale = value; } }
             public static float TimeScale { get { return Instance.timeScale; } set { Instance.timeScale = value; } }
             public static float RoadWidth { get { return Instance.roadWidth; } set { Instance.roadWidth = value; } }

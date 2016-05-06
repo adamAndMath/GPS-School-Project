@@ -14,17 +14,27 @@ namespace CTD_Sim
             public List<IRoad> Path { get; private set; }
             public float Progress { get; set; }
             public bool IsNoding { get; set; }
-            public float Speed { get; set; }
+            public virtual float Speed { get; set; }
             public INode From { get; private set; }
             public INode To { get; private set; }
 
-            public void Init(INode from, INode to)
+            public virtual void Init(INode from, INode to)
             {
                 From = from;
                 To = to;
                 Speed = 0;
                 Path = World.Pathfinder.FindPath(this, from, to);
                 Path[0].AddCar(this);
+            }
+
+            public virtual void Return()
+            {
+
+            }
+
+            public virtual void OnRoadChanged()
+            {
+
             }
 
             public void UpdateSpeedAndProgress(float deltaTime)
@@ -92,6 +102,7 @@ namespace CTD_Sim
                         Path[0].To.RemoveCar(this, Path[0], Path[1]);
                         Path.RemoveAt(0);
                         Path[0].AddCar(this);
+                        OnRoadChanged();
                     }
                 }
                 else if (Progress > Path[0].Length)

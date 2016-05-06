@@ -13,16 +13,22 @@ namespace CTD_Sim
             public float speedLimit;
 
             private IRoad roadForward;
+            private CTD.IRoad ctdForward;
             public bool backward;
             private IRoad roadBackward;
+            private CTD.IRoad ctdBackward;
 
             void Start()
             {
-                roadForward = new Road(from.Node, to.Node) { SpeedLimit = speedLimit };
+                roadForward = new Road(WorldFront.Instance.NextRoadID, from.Node, to.Node) { SpeedLimit = speedLimit };
+                ctdForward = new CTD.Road(roadForward.ID);
+                World.CTDManager.AddRoad(ctdForward);
 
                 if (backward)
                 {
-                    roadBackward = new Road(to.Node, from.Node) { SpeedLimit = speedLimit };
+                    roadBackward = new Road(WorldFront.Instance.NextRoadID, to.Node, from.Node) { SpeedLimit = speedLimit };
+                    ctdBackward = new CTD.Road(roadBackward.ID);
+                    World.CTDManager.AddRoad(ctdBackward);
                 }
 
                 from.AddRoad(roadForward, roadBackward);

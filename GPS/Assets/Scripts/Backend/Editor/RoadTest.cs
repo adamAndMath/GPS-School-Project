@@ -14,9 +14,11 @@ public class RoadTest
 
         //Act
         //Try to create a road
-        var newRoad = new Road(from, to);
+        var newRoad = new Road(725, from, to);
 
         //Assert
+        //The id is 725
+        Assert.AreEqual(725, newRoad.ID);
         //The road has the nodes as from and to
         Assert.AreEqual(from, newRoad.From);
         Assert.AreEqual(to, newRoad.To);
@@ -30,7 +32,7 @@ public class RoadTest
         var to = new Node(Vector2.right, Direction.Up);
 
         //Act
-        var road = new Road(from, to);
+        var road = new Road(0, from, to);
 
         //Assert
         Assert.AreEqual(string.Format("Road from {0} to {1}", from, to), road.ToString());
@@ -42,7 +44,7 @@ public class RoadTest
         //Arrange
         var from = new Node(Vector2.zero, Direction.Up);
         var to = new Node(new Vector2(3, 4), Direction.Up);
-        var newRoad = new Road(from, to);
+        var newRoad = new Road(0, from, to);
         World.WorldScale = 2;
         World.RoadWidth = 1;
 
@@ -61,7 +63,7 @@ public class RoadTest
         //Arrange
         var from = new Node(Vector2.zero, Direction.Up);
         var to = new Node(Vector2.right, Direction.Up);
-        var road = new Road(from, to) { SpeedLimit = 1 };
+        var road = new Road(0, from, to) { SpeedLimit = 1 };
         var car = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };
         road.AddCar(car);
         float slowdown = 0;
@@ -91,7 +93,7 @@ public class RoadTest
         //Arrange
         var from = new Node(Vector2.zero, Direction.Up);
         var to = new Node(Vector2.right, Direction.Up);
-        var road = new Road(from, to) { SpeedLimit = 100 };
+        var road = new Road(0, from, to) { SpeedLimit = 100 };
         var car = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1 };
         var otherCar = new Car();
         float slowdown = 0;

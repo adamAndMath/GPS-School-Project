@@ -38,6 +38,7 @@ namespace CTD_Sim
                 {
                     if (renderer.enabled == true)
                     {
+                        car.Return();
                         renderer.enabled = false;
                         WorldFront.ReturnCar(this);
                     }

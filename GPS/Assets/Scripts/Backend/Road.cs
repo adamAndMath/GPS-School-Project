@@ -9,6 +9,7 @@ namespace CTD_Sim
         {
             private List<ICar> cars = new List<ICar>();
 
+            public long ID { get; private set; }
             public INode From { get; private set; }
             public INode To { get; private set; }
             public float SpeedLimit { get; set; }
@@ -20,8 +21,9 @@ namespace CTD_Sim
 
             public ICar this[int i] { get { return cars[i]; } }
 
-            public Road(INode from, INode to)
+            public Road(long id, INode from, INode to)
             {
+                ID = id;
                 From = from;
                 To = to;
             }

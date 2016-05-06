@@ -38,8 +38,8 @@ public class CarTest
         var node1 = new Node(new Vector2(4, 3), Direction.Up);
         var node2 = new Node(new Vector2(7, 7), Direction.Up);
 
-        var road0 = new Road(node0, node1);
-        var road1 = new Road(node1, node2);
+        var road0 = new Road(0, node0, node1);
+        var road1 = new Road(1, node1, node2);
 
         node0.Roads.Add(road0);
         node1.Roads.Add(road1);
@@ -65,8 +65,8 @@ public class CarTest
         var node1 = new Node(new Vector2(4, 3), Direction.Up);
         var node2 = new Node(new Vector2(7, 7), Direction.Up);
 
-        var road0 = new Road(node0, node1) { SpeedLimit = 3 };
-        var road1 = new Road(node1, node2) { SpeedLimit = 3 };
+        var road0 = new Road(0, node0, node1) { SpeedLimit = 3 };
+        var road1 = new Road(1, node1, node2) { SpeedLimit = 3 };
 
         node0.Roads.Add(road0);
         node1.Roads.Add(road1);

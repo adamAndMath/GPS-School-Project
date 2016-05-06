@@ -11,7 +11,7 @@ namespace CTD_Sim
         public class WorldFront : MonoBehaviour
         {
             public static WorldFront Instance { get; private set; }
-            private static System.Type[] carTypes = new[] { typeof(Car), typeof(CarGPS) };
+            private static System.Type[] carTypes = new[] { typeof(Car), typeof(CarGPS), typeof(CarAPI) };
 
             [System.NonSerialized]
             public readonly List<CarFront> activeCars = new List<CarFront>();
@@ -34,6 +34,9 @@ namespace CTD_Sim
 
             private CarFront sellectedCar;
             private FixedQueue<Vector3> carData;
+            private long nextID = 0;
+
+            public long NextRoadID { get { return nextID++; } }
 
             public enum CarLabel { None = 0, Name = 1, RoadID = 2 }
             public enum CarGraphType { SpeedOverTime = 0, PosOverTime = 1, SpeedOverPos = 2 }

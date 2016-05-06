@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Backend\Cars\Car.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\CarAPI.cs" />
+     <Compile Include="Assets\Scripts\Backend\Cars\CarGPS.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\ICar.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\INode.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\IPathFinder.cs" />
@@ -57,6 +58,11 @@
      <Compile Include="Assets\Scripts\Backend\PathFinder.cs" />
      <Compile Include="Assets\Scripts\Backend\Road.cs" />
      <Compile Include="Assets\Scripts\Backend\World.cs" />
+     <Compile Include="Assets\Scripts\CTD\CTDClient.cs" />
+     <Compile Include="Assets\Scripts\CTD\CTDManager.cs" />
+     <Compile Include="Assets\Scripts\CTD\IClient.cs" />
+     <Compile Include="Assets\Scripts\CTD\IRoad.cs" />
+     <Compile Include="Assets\Scripts\CTD\Road.cs" />
      <Compile Include="Assets\Scripts\Frontend\CarFront.cs" />
      <Compile Include="Assets\Scripts\Frontend\CarPool.cs" />
      <Compile Include="Assets\Scripts\Frontend\NodeFront.cs" />

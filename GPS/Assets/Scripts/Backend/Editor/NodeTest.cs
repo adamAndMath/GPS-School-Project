@@ -47,10 +47,10 @@ public class NodeTest
         INode nodeLeft = new Node(Vector2.left, Direction.Up);
         INode nodeDown = new Node(Vector2.down, Direction.Up);
 
-        IRoad roadLeftFrom = new Road(nodeCenter, nodeLeft);
-        IRoad roadLeftTo = new Road(nodeLeft, nodeCenter);
-        IRoad roadDownFrom = new Road(nodeCenter, nodeDown);
-        IRoad roadDownTo = new Road(nodeDown, nodeCenter);
+        IRoad roadLeftFrom = new Road(0, nodeCenter, nodeLeft);
+        IRoad roadLeftTo = new Road(1, nodeLeft, nodeCenter);
+        IRoad roadDownFrom = new Road(2, nodeCenter, nodeDown);
+        IRoad roadDownTo = new Road(3, nodeDown, nodeCenter);
 
         ICar carLeft = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1, Speed = 1 };
         ICar carDown = new Car() { Acceleration = 1, Deceleration = 2, NiceDeceleration = 1, Speed = 1 };
@@ -91,12 +91,12 @@ public class NodeTest
         var nodeDown = new Node(new Vector2(0, -1), Direction.Up);
         var nodeRight = new Node(new Vector2(1, 0), Direction.Up);
 
-        var roadUpTo = new Road(nodeUp, node);
-        var roadUpFrom = new Road(node, nodeUp);
-        var roadDownTo = new Road(nodeDown, node);
-        var roadDownFrom = new Road(node, nodeDown);
-        var roadRightTo = new Road(nodeRight, node);
-        var roadRightFrom = new Road(node, nodeRight);
+        var roadUpTo = new Road(0, nodeUp, node);
+        var roadUpFrom = new Road(1, node, nodeUp);
+        var roadDownTo = new Road(2, nodeDown, node);
+        var roadDownFrom = new Road(3, node, nodeDown);
+        var roadRightTo = new Road(4, nodeRight, node);
+        var roadRightFrom = new Road(5, node, nodeRight);
 
         node.Roads.Add(roadUpFrom);
         nodeUp.Roads.Add(roadUpTo);

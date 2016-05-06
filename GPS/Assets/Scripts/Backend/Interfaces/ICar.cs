@@ -18,6 +18,7 @@ namespace CTD_Sim
             INode To { get; }
 
             void Init(INode from, INode to);
+            void Return();
             void UpdateSpeedAndProgress(float deltaTime);
             float RequiredDecceleration(float speedTo, float distance);
             float SafeDistance(float speed);

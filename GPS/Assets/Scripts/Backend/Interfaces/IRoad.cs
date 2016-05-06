@@ -6,6 +6,7 @@ namespace CTD_Sim
     {
         public interface IRoad
         {
+            long ID { get; }
             INode From { get; }
             INode To { get; }
             float SpeedLimit { get; }
