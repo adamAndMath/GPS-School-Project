@@ -8,7 +8,6 @@ namespace CTD
         private float estimetedSpeed;
 
         public long ID { get; private set; }
-        public float Length { get; set; }
         public float SpeedLimit { get; set; }
         public List<IClient> Cars { get; private set; }
         float AverageSpeed
@@ -60,23 +59,24 @@ namespace CTD
 
         public void OnEstimateChanged()
         {
+            float oldEstimate = EstimatedSpeed;
             float newEstimate = SpeedLimit;
 
             if (Relevance >= CTDManager.SpeedDifferenceRelevance)
                     newEstimate = AverageSpeed;
 
-            if (newEstimate < EstimatedSpeed)
+            EstimatedSpeed = Math.Min(0.01F, newEstimate);
+
+            if (newEstimate < oldEstimate)
             {
                 if (EstimateDecrease != null)
                     EstimateDecrease(this, newEstimate);
             }
-            else if (newEstimate > EstimatedSpeed)
+            else if (newEstimate > oldEstimate)
             {
                 if (EstimateIncrease != null)
                     EstimateIncrease(this, newEstimate);
             }
-
-            EstimatedSpeed = newEstimate;
         }
     }
 }

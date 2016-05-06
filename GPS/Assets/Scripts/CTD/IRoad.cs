@@ -7,7 +7,6 @@ namespace CTD
     public interface IRoad
     {
         long ID { get; }
-        float Length { get; }
         float SpeedLimit { get; }
         List<IClient> Cars { get; }
         float EstimatedSpeed { get; }

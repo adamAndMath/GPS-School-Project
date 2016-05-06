@@ -11,7 +11,7 @@ namespace CTD_Sim
             public float Acceleration { get; set; }
             public float Deceleration { get; set; }
             public float NiceDeceleration { get; set; }
-            public List<IRoad> Path { get; private set; }
+            public List<IRoad> Path { get; protected set; }
             public float Progress { get; set; }
             public bool IsNoding { get; set; }
             public virtual float Speed { get; set; }
