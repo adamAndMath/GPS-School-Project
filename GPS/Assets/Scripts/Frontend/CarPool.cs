@@ -3,50 +3,47 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CTD_Sim
+namespace CTD_Sim.Frontend
 {
-    namespace Frontend
+    public class CarPool
     {
-        public class CarPool
+        private static readonly Type[] CarParameterTypes = new Type[0];
+        private static readonly object[] CarParameters = new object[0];
+
+        public readonly Type carType;
+        public readonly CarFront prefab;
+        public readonly Stack<CarFront> cars = new Stack<CarFront>();
+
+        private int carCount;
+
+        public CarPool(Type type, CarFront prefab)
         {
-            private static readonly Type[] CarParameterTypes = new Type[0];
-            private static readonly object[] CarParameters = new object[0];
+            carType = type;
+            this.prefab = prefab;
+        }
 
-            public readonly Type carType;
-            public readonly CarFront prefab;
-            public readonly Stack<CarFront> cars = new Stack<CarFront>();
+        public CarFront GetCar(INode from, INode to)
+        {
+            CarFront car;
 
-            private int carCount;
-
-            public CarPool(Type type, CarFront prefab)
+            if (cars.Count == 0)
             {
-                carType = type;
-                this.prefab = prefab;
+                car = GameObject.Instantiate(prefab.gameObject).GetComponent<CarFront>();
+                car.car = (ICar)carType.GetConstructor(CarParameterTypes).Invoke(CarParameters);
+                car.gameObject.name = car.identifier + (++carCount);
+            }
+            else
+            {
+                car = cars.Pop();
             }
 
-            public CarFront GetCar(INode from, INode to)
-            {
-                CarFront car;
+            car.car.Init(from, to);
+            return car;
+        }
 
-                if (cars.Count == 0)
-                {
-                    car = GameObject.Instantiate(prefab.gameObject).GetComponent<CarFront>();
-                    car.car = (ICar)carType.GetConstructor(CarParameterTypes).Invoke(CarParameters);
-                    car.gameObject.name = car.identifier + (++carCount);
-                }
-                else
-                {
-                    car = cars.Pop();
-                }
-
-                car.car.Init(from, to);
-                return car;
-            }
-
-            public void ReturnCar(CarFront car)
-            {
-                cars.Push(car);
-            }
+        public void ReturnCar(CarFront car)
+        {
+            cars.Push(car);
         }
     }
 }

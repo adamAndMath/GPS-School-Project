@@ -1,90 +1,87 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CTD_Sim
+namespace CTD_Sim.Backend
 {
-    namespace Backend
+    public class Road : IRoad
     {
-        public class Road : IRoad
+        private List<ICar> cars = new List<ICar>();
+
+        public long ID { get; private set; }
+        public INode From { get; private set; }
+        public INode To { get; private set; }
+        public float SpeedLimit { get; set; }
+        public float RealLength { get { return (To.Position - From.Position).magnitude - 2 * World.RealRoadWidth; } }
+        public float Length { get { return RealLength * World.WorldScale; } }
+
+        public IEnumerable<ICar> Cars { get { return cars; } }
+        public int CarCount { get { return cars.Count; } }
+
+        public ICar this[int i] { get { return cars[i]; } }
+
+        public Road(long id, INode from, INode to)
         {
-            private List<ICar> cars = new List<ICar>();
+            ID = id;
+            From = from;
+            To = to;
+        }
 
-            public long ID { get; private set; }
-            public INode From { get; private set; }
-            public INode To { get; private set; }
-            public float SpeedLimit { get; set; }
-            public float RealLength { get { return (To.Position - From.Position).magnitude - 2 * World.RealRoadWidth; } }
-            public float Length { get { return RealLength * World.WorldScale; } }
+        public void AddCar(ICar car)
+        {
+            cars.Add(car);
+        }
 
-            public IEnumerable<ICar> Cars { get { return cars; } }
-            public int CarCount { get { return cars.Count; } }
+        public void RemoveCar(ICar car)
+        {
+            cars.Remove(car);
+        }
 
-            public ICar this[int i] { get { return cars[i]; } }
+        public int IndexOfCar(ICar car)
+        {
+            return cars.IndexOf(car);
+        }
 
-            public Road(long id, INode from, INode to)
+        public void GetSlowdown(ICar car, float progress, int preIndex, int roadIndex, ref float requiredSlowdown)
+        {
+            if (car.Speed > SpeedLimit)
             {
-                ID = id;
-                From = from;
-                To = to;
-            }
-
-            public void AddCar(ICar car)
-            {
-                cars.Add(car);
-            }
-
-            public void RemoveCar(ICar car)
-            {
-                cars.Remove(car);
-            }
-
-            public int IndexOfCar(ICar car)
-            {
-                return cars.IndexOf(car);
-            }
-
-            public void GetSlowdown(ICar car, float progress, int preIndex, int roadIndex, ref float requiredSlowdown)
-            {
-                if (car.Speed > SpeedLimit)
+                if (progress < 0)
                 {
-                    if (progress < 0)
-                    {
-                        requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(SpeedLimit, -progress));
-                    }
-                    else
-                    {
-                        requiredSlowdown = car.Deceleration;
-                        return;
-                    }
+                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(SpeedLimit, -progress));
                 }
-
-                for (var i = roadIndex - 1; i >= 0; i--)
+                else
                 {
-                    if (preIndex + roadIndex - i > World.LookForward)
-                        break;
-
-                    var c = cars[i];
-
-                    var dist = c.Progress - progress - (preIndex + roadIndex - i) * car.SafeDistance(Mathf.Min(car.Speed, c.Speed));
-
-                    if (dist > World.ViewDistance) break;
-
-                    if (dist < 0)
-                    {
-                        requiredSlowdown = car.Deceleration;
-                        return;
-                    }
-
-                    if (c.Speed >= car.Speed) continue;
-
-                    requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(c.Speed, dist));
+                    requiredSlowdown = car.Deceleration;
+                    return;
                 }
             }
 
-            public override string ToString()
+            for (var i = roadIndex - 1; i >= 0; i--)
             {
-                return string.Format("Road from {0} to {1}", From, To);
+                if (preIndex + roadIndex - i > World.LookForward)
+                    break;
+
+                var c = cars[i];
+
+                var dist = c.Progress - progress - (preIndex + roadIndex - i) * car.SafeDistance(Mathf.Min(car.Speed, c.Speed));
+
+                if (dist > World.ViewDistance) break;
+
+                if (dist < 0)
+                {
+                    requiredSlowdown = car.Deceleration;
+                    return;
+                }
+
+                if (c.Speed >= car.Speed) continue;
+
+                requiredSlowdown = Mathf.Max(requiredSlowdown, car.RequiredDecceleration(c.Speed, dist));
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Road from {0} to {1}", From, To);
         }
     }
 }

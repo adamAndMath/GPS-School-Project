@@ -1,44 +1,41 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CTD_Sim
+namespace CTD_Sim.Frontend
 {
-    namespace Frontend
+    [CustomEditor(typeof(CarFront))]
+    public class CarFrontEditor : Editor
     {
-        [CustomEditor(typeof(CarFront))]
-        public class CarFrontEditor : Editor
+        SerializedProperty propID;
+        SerializedProperty propAcceleration;
+        SerializedProperty propDeceleration;
+        SerializedProperty propNiceDeceleration;
+
+        void OnEnable()
         {
-            SerializedProperty propID;
-            SerializedProperty propAcceleration;
-            SerializedProperty propDeceleration;
-            SerializedProperty propNiceDeceleration;
+            propID = serializedObject.FindProperty("identifier");
+            propAcceleration = serializedObject.FindProperty("acceleration");
+            propDeceleration = serializedObject.FindProperty("deceleration");
+            propNiceDeceleration = serializedObject.FindProperty("niceDeceleration");
+        }
 
-            void OnEnable()
-            {
-                propID = serializedObject.FindProperty("identifier");
-                propAcceleration = serializedObject.FindProperty("acceleration");
-                propDeceleration = serializedObject.FindProperty("deceleration");
-                propNiceDeceleration = serializedObject.FindProperty("niceDeceleration");
-            }
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-            public override void OnInspectorGUI()
-            {
-                serializedObject.Update();
+            EditorGUILayout.PropertyField(propID);
+            EditorGUILayout.PropertyField(propAcceleration);
+            EditorGUILayout.PropertyField(propDeceleration);
+            EditorGUILayout.PropertyField(propNiceDeceleration);
 
-                EditorGUILayout.PropertyField(propID);
-                EditorGUILayout.PropertyField(propAcceleration);
-                EditorGUILayout.PropertyField(propDeceleration);
-                EditorGUILayout.PropertyField(propNiceDeceleration);
+            serializedObject.ApplyModifiedProperties();
 
-                serializedObject.ApplyModifiedProperties();
+            var carFront = (CarFront)serializedObject.targetObject;
 
-                var carFront = (CarFront)serializedObject.targetObject;
+            if (carFront.car == null) return;
 
-                if (carFront.car == null) return;
-
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Complete", carFront.car.Complete ? "True" : "False");
-            }
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Complete", carFront.car.Complete ? "True" : "False");
         }
     }
 }

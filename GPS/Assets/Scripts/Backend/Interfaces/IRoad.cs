@@ -1,27 +1,24 @@
 ﻿using System.Collections.Generic;
 
-namespace CTD_Sim
+namespace CTD_Sim.Backend
 {
-    namespace Backend
+    public interface IRoad
     {
-        public interface IRoad
-        {
-            long ID { get; }
-            INode From { get; }
-            INode To { get; }
-            float SpeedLimit { get; }
-            float RealLength { get; }
-            float Length { get; }
+        long ID { get; }
+        INode From { get; }
+        INode To { get; }
+        float SpeedLimit { get; }
+        float RealLength { get; }
+        float Length { get; }
 
-            IEnumerable<ICar> Cars { get; }
-            int CarCount { get; }
-            ICar this[int i] { get; }
+        IEnumerable<ICar> Cars { get; }
+        int CarCount { get; }
+        ICar this[int i] { get; }
 
-            void AddCar(ICar car);
-            void RemoveCar(ICar car);
-            int IndexOfCar(ICar car);
+        void AddCar(ICar car);
+        void RemoveCar(ICar car);
+        int IndexOfCar(ICar car);
 
-            void GetSlowdown(ICar car, float progress, int preIndex, int roadIndex, ref float requiredSlowdown);
-        }
+        void GetSlowdown(ICar car, float progress, int preIndex, int roadIndex, ref float requiredSlowdown);
     }
 }

@@ -4,75 +4,72 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CTD_Sim
+namespace CTD_Sim.Frontend
 {
-    namespace Frontend
+    public class WorldMenu : MonoBehaviour
     {
-        public class WorldMenu : MonoBehaviour
+        public GameObject ratioPrefab;
+        [Space()]
+        public Text labelWorldScale;
+        public Slider sliderWorldScale;
+        public Text labelTimeScale;
+        public Slider sliderTimeScale;
+        public RectTransform carRatioParent;
+        public Dropdown dropdownCarLabel;
+        public Dropdown dropdownGraphType;
+
+        private string formatWorldScale;
+        private string formatTimeScale;
+
+        void Start()
         {
-            public GameObject ratioPrefab;
-            [Space()]
-            public Text labelWorldScale;
-            public Slider sliderWorldScale;
-            public Text labelTimeScale;
-            public Slider sliderTimeScale;
-            public RectTransform carRatioParent;
-            public Dropdown dropdownCarLabel;
-            public Dropdown dropdownGraphType;
+            formatWorldScale = labelWorldScale.text;
+            formatTimeScale = labelTimeScale.text;
+            sliderWorldScale.value = World.WorldScale;
+            sliderTimeScale.value = World.TimeScale;
 
-            private string formatWorldScale;
-            private string formatTimeScale;
-
-            void Start()
+            for (var i = 0; i < WorldFront.Instance.carPrefabs.Length; ++i)
             {
-                formatWorldScale = labelWorldScale.text;
-                formatTimeScale = labelTimeScale.text;
-                sliderWorldScale.value = World.WorldScale;
-                sliderTimeScale.value = World.TimeScale;
-
-                for (var i = 0; i < WorldFront.Instance.carPrefabs.Length; ++i)
-                {
-                    var ratio = Instantiate(ratioPrefab).transform;
-                    ratio.SetParent(carRatioParent, false);
-                    ratio.GetChild(0).GetComponent<Text>().text = WorldFront.Instance.carPrefabs[i].identifier.ToString();
-                    ratio.GetChild(1).GetComponent<Slider>().onValueChanged.AddListener(GetRatioFunc(i));
-                }
-
-                dropdownCarLabel.options = Enum.GetNames(typeof(WorldFront.CarLabel)).Select(name => new Dropdown.OptionData(name)).ToList();
-                dropdownGraphType.options = Enum.GetNames(typeof(WorldFront.CarGraphType)).Select(name => new Dropdown.OptionData(name)).ToList();
+                var ratio = Instantiate(ratioPrefab).transform;
+                ratio.SetParent(carRatioParent, false);
+                ratio.GetChild(0).GetComponent<Text>().text = WorldFront.Instance.carPrefabs[i].identifier.ToString();
+                ratio.GetChild(1).GetComponent<Slider>().onValueChanged.AddListener(GetRatioFunc(i));
             }
 
-            void Update()
-            {
-                labelTimeScale.text = string.Format(formatTimeScale, World.TimeScale);
-            }
+            dropdownCarLabel.options = Enum.GetNames(typeof(WorldFront.CarLabel)).Select(name => new Dropdown.OptionData(name)).ToList();
+            dropdownGraphType.options = Enum.GetNames(typeof(WorldFront.CarGraphType)).Select(name => new Dropdown.OptionData(name)).ToList();
+        }
 
-            public void OnWorldScaleChange()
-            {
-                World.WorldScale = sliderWorldScale.value;
-                labelWorldScale.text = string.Format(formatWorldScale, World.WorldScale);
-            }
+        void Update()
+        {
+            labelTimeScale.text = string.Format(formatTimeScale, World.TimeScale);
+        }
 
-            public void OnTimeScaleChange()
-            {
-                World.TimeScale = sliderTimeScale.value;
-                labelTimeScale.text = string.Format(formatTimeScale, World.TimeScale);
-            }
+        public void OnWorldScaleChange()
+        {
+            World.WorldScale = sliderWorldScale.value;
+            labelWorldScale.text = string.Format(formatWorldScale, World.WorldScale);
+        }
 
-            private UnityEngine.Events.UnityAction<float> GetRatioFunc(int id)
-            {
-                return (val) => WorldFront.Instance.carRatio[id] = val;
-            }
+        public void OnTimeScaleChange()
+        {
+            World.TimeScale = sliderTimeScale.value;
+            labelTimeScale.text = string.Format(formatTimeScale, World.TimeScale);
+        }
 
-            public void OnCarLabelChange()
-            {
-                WorldFront.Instance.carLabel = (WorldFront.CarLabel)dropdownCarLabel.value;
-            }
+        private UnityEngine.Events.UnityAction<float> GetRatioFunc(int id)
+        {
+            return (val) => WorldFront.Instance.carRatio[id] = val;
+        }
 
-            public void OnGraphTypeChange()
-            {
-                WorldFront.Instance.graphType = (WorldFront.CarGraphType)dropdownGraphType.value;
-            }
+        public void OnCarLabelChange()
+        {
+            WorldFront.Instance.carLabel = (WorldFront.CarLabel)dropdownCarLabel.value;
+        }
+
+        public void OnGraphTypeChange()
+        {
+            WorldFront.Instance.graphType = (WorldFront.CarGraphType)dropdownGraphType.value;
         }
     }
 }
