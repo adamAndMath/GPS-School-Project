@@ -12,11 +12,10 @@ namespace CTD
         public event RoadChangeHandler RoadEstimationDecrease;
         public event RoadChangeHandler RoadEstimationIncrease;
 
-        public CTDClient(CTDManager manager, long roadID, float speed)
+        public CTDClient(CTDManager manager)
         {
             Manager = manager;
             Manager.AddClient(this);
-            Road = Manager.GetRoad(roadID);
         }
 
         public void ListenToRoadDecrease(long roadID)
@@ -59,13 +58,18 @@ namespace CTD
         public void SendSpeedChange(float speed)
         {
             Speed = speed;
-            Road.OnEstimateChanged();
+
+            if (Road != null)
+                Road.OnEstimateChanged();
         }
 
         public void SendRoadChange(long roadID, float speed)
         {
             Speed = speed;
-            Road.RemoveCar(this);
+
+            if (Road != null)
+                Road.RemoveCar(this);
+
             Road = Manager.GetRoad(roadID);
             Road.AddCar(this);
         }

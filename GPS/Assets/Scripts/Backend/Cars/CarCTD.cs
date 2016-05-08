@@ -20,10 +20,11 @@ namespace CTD_Sim.Backend
 
         public override void Init(INode from, INode to)
         {
+            client = new CTD.CTDClient(World.CTDManager);
+            client.RoadEstimationDecrease += OnSpeedEstimateDecrease;
             base.Init(from, to);
             OnPathChanged();
-            client = new CTD.CTDClient(World.CTDManager, Path[0].ID, Speed);
-            client.RoadEstimationDecrease += OnSpeedEstimateDecrease;
+            OnRoadChanged();
         }
 
         public override void Return()
