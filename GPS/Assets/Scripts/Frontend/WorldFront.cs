@@ -9,7 +9,7 @@ namespace CTD_Sim.Frontend
     public class WorldFront : MonoBehaviour
     {
         public static WorldFront Instance { get; private set; }
-        private static System.Type[] carTypes = new[] { typeof(Car), typeof(CarGPS), typeof(CarAPI) };
+        private static System.Type[] carTypes = new[] { typeof(Car), typeof(CarGPS), typeof(CarCTD) };
 
         [System.NonSerialized]
         public readonly List<CarFront> activeCars = new List<CarFront>();

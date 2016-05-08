@@ -40,5 +40,10 @@ namespace CTD_Sim.Backend
         public static int ViewDistance { get { return Instance.viewDistance; } set { Instance.viewDistance = value; } }
         public static float CarDistance { get { return Instance.carDistance; } set { Instance.carDistance = value; } }
         public static int LookForward { get { return Instance.lookForward; } set { Instance.lookForward = value; } }
+
+        public static CTD.IRoad GetCTDRoad(IRoad road)
+        {
+            return CTDManager.GetRoad(road.ID);
+        }
     }
 }

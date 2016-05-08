@@ -2,7 +2,7 @@
 
 namespace CTD_Sim.Backend
 {
-    public class CarAPI : Car
+    public class CarCTD : Car
     {
         private CTD.CTDClient client;
 
@@ -31,7 +31,7 @@ namespace CTD_Sim.Backend
 
         public override void OnRoadChanged()
         {
-            World.CTDManager.GetRoad(Path[0].ID).EstimateDecrease -= OnSpeedEstimateDecrease;
+            World.GetCTDRoad(Path[0]).EstimateDecrease -= OnSpeedEstimateDecrease;
             client.SendRoadChange(Path[0].ID, Speed);
         }
 
@@ -39,17 +39,17 @@ namespace CTD_Sim.Backend
         {
             foreach (IRoad road in Path)
             {
-                World.CTDManager.GetRoad(road.ID).EstimateDecrease += OnSpeedEstimateDecrease;
+                World.GetCTDRoad(road).EstimateDecrease += OnSpeedEstimateDecrease;
             }
 
-            World.CTDManager.GetRoad(Path[0].ID).EstimateDecrease -= OnSpeedEstimateDecrease;
+            World.GetCTDRoad(Path[0]).EstimateDecrease -= OnSpeedEstimateDecrease;
         }
 
         private void OnSpeedEstimateDecrease(CTD.IRoad road, float estimate)
         {
-            foreach (IRoad r in Path)
+            foreach (IRoad path in Path)
             {
-                World.CTDManager.GetRoad(r.ID).EstimateDecrease -= OnSpeedEstimateDecrease;
+                World.GetCTDRoad(path).EstimateDecrease -= OnSpeedEstimateDecrease;
             }
 
             List<IRoad> newPath = World.Pathfinder.FindPath(this, Path[0].To, To);
@@ -60,7 +60,8 @@ namespace CTD_Sim.Backend
 
         public override float TimePoints(IRoad road)
         {
-            return road.Length / World.CTDManager.GetRoad(road.ID).EstimatedSpeed;
+            CTD.IRoad ctdRoad = World.GetCTDRoad(road);
+            return road.Length / ctdRoad.EstimatedSpeed;
         }
 
         public override float TimeEstimate(INode from, INode to)
