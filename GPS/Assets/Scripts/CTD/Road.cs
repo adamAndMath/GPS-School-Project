@@ -70,12 +70,12 @@ namespace CTD
             if (newEstimate < oldEstimate)
             {
                 if (EstimateDecrease != null)
-                    EstimateDecrease(this, newEstimate);
+                    EstimateDecrease(ID, newEstimate);
             }
             else if (newEstimate > oldEstimate)
             {
                 if (EstimateIncrease != null)
-                    EstimateIncrease(this, newEstimate);
+                    EstimateIncrease(ID, newEstimate);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace CTD
 {
-    public delegate void RoadChangeHandler(IRoad sender, float estimate);
+    public delegate void RoadChangeHandler(long roadID, float estimate);
 
     public interface IRoad
     {
