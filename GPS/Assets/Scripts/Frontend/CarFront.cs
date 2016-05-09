@@ -45,6 +45,7 @@ namespace CTD_Sim.Frontend
             {
                 renderer.enabled = true;
                 transform.position = car.IsNoding ? GetNodePosition() : GetRoadPosition();
+                transform.localScale = Vector3.one * World.RealRoadWidth * 5;
             }
         }
 
