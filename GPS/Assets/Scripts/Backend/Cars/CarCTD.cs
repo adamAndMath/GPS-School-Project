@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CTD_Sim.Backend
 {
     public class CarCTD : Car
     {
-        private CTD.CTDClient client;
+        private CTDClient client;
 
         public override float Speed
         {
@@ -20,7 +21,7 @@ namespace CTD_Sim.Backend
 
         public override void Init(INode from, INode to)
         {
-            client = new CTD.CTDClient(World.CTDManager);
+            client = new CTDClient(World.CTDManager);
             client.RoadEstimationDecrease += OnSpeedEstimateDecrease;
             base.Init(from, to);
             OnPathChanged();

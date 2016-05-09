@@ -1,13 +1,15 @@
-﻿using System;
+﻿using CTD;
+using System;
+using UnityEngine;
 
-namespace CTD
+namespace CTD_Sim.Backend
 {
     public class CTDClient : IClient, IDisposable
     {
         private readonly CTDManager Manager;
 
         public float Speed { get; private set; }
-        public IRoad Road { get; private set; }
+        public CTD.IRoad Road { get; private set; }
 
         public event RoadChangeHandler RoadEstimationDecrease;
         public event RoadChangeHandler RoadEstimationIncrease;
@@ -60,7 +62,7 @@ namespace CTD
             Speed = speed;
 
             if (Road != null)
-                Road.OnEstimateChanged();
+                Road.OnEstimateChanged(Time.time);
         }
 
         public void SendRoadChange(long roadID, float speed)
@@ -68,10 +70,10 @@ namespace CTD
             Speed = speed;
 
             if (Road != null)
-                Road.RemoveCar(this);
+                Road.RemoveCar(this, Time.time);
 
             Road = Manager.GetRoad(roadID);
-            Road.AddCar(this);
+            Road.AddCar(this, Time.time);
         }
 
         public void Dispose()
@@ -82,7 +84,7 @@ namespace CTD
         protected virtual void Dispose(bool disposing)
         {
             Manager.RemoveClient(this);
-            Road.RemoveCar(this);
+            Road.RemoveCar(this, Time.time);
         }
     }
 }

@@ -14,9 +14,9 @@ namespace CTD
         event RoadChangeHandler EstimateDecrease;
         event RoadChangeHandler EstimateIncrease;
 
-        void AddCar(IClient car);
-        void RemoveCar(IClient car);
+        void AddCar(IClient car, float time);
+        void RemoveCar(IClient car, float time);
 
-        void OnEstimateChanged();
+        void OnEstimateChanged(float time);
     }
 }

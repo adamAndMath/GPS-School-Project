@@ -5,6 +5,7 @@ namespace CTD
     public class CTDManager
     {
         public const float SpeedDifferenceRelevance = 0.1F;
+        public const float TimeMemory = 30F;
 
         List<IClient> clients = new List<IClient>();
         Dictionary<long, IRoad> roads = new Dictionary<long, IRoad>();
