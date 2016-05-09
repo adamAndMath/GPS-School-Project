@@ -1,5 +1,6 @@
 ﻿using CTD_Sim.Backend;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CTD_Sim.Frontend
@@ -146,9 +147,29 @@ namespace CTD_Sim.Frontend
                 if (timer <= 0)
                 {
                     timer = spawnRate;
-                    WorldFront.GetCar(Node, Nodes[(Nodes.IndexOf(this) + Random.Range(1, Nodes.Count - 1)) % Nodes.Count].Node);
+                    WorldFront.GetCar(Node, GetNode().Node);
                 }
             }
+        }
+
+        NodeFront GetNode()
+        {
+            var r = Random.Range(0, Nodes.Sum(n => n.spawnRate) - spawnRate);
+
+            foreach (var node in Nodes)
+            {
+                if (node == this)
+                    continue;
+
+                r -= node.spawnRate;
+
+                if (r < 0)
+                {
+                    return node;
+                }
+            }
+
+            throw new System.Exception();
         }
     }
 }
