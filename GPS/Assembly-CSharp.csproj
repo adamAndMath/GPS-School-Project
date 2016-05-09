@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Backend\CTDClient.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\Car.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\CarCTD.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\CarGPS.cs" />
@@ -58,7 +59,6 @@
      <Compile Include="Assets\Scripts\Backend\PathFinder.cs" />
      <Compile Include="Assets\Scripts\Backend\Road.cs" />
      <Compile Include="Assets\Scripts\Backend\World.cs" />
-     <Compile Include="Assets\Scripts\CTD\CTDClient.cs" />
      <Compile Include="Assets\Scripts\CTD\CTDManager.cs" />
      <Compile Include="Assets\Scripts\CTD\IClient.cs" />
      <Compile Include="Assets\Scripts\CTD\IRoad.cs" />
