@@ -152,7 +152,7 @@ namespace CTD_Sim.Frontend
             }
         }
 
-        NodeFront GetNode()
+        public NodeFront GetNode()
         {
             var r = Random.Range(0, Nodes.Sum(n => n.spawnRate) - spawnRate);
 

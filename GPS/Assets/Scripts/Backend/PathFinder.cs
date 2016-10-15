@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace CTD_Sim.Backend
 {
@@ -11,9 +10,9 @@ namespace CTD_Sim.Backend
         {
             public OpenPath parent;
             public IRoad road;
-            public INode node;
+            public readonly INode node;
             public float timeTo;
-            public float timeEstimate;
+            private readonly float timeEstimate;
 
             public float T { get { return timeTo + timeEstimate; } }
 

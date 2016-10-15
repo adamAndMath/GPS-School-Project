@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Backend\Cars\Car.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\CarCTD.cs" />
      <Compile Include="Assets\Scripts\Backend\Cars\CarGPS.cs" />
+     <Compile Include="Assets\Scripts\Backend\House.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\ICar.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\INode.cs" />
      <Compile Include="Assets\Scripts\Backend\Interfaces\IPathFinder.cs" />
