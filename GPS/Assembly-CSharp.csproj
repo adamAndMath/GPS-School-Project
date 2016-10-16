@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\Frontend\NodeFront.cs" />
      <Compile Include="Assets\Scripts\Frontend\RoadFront.cs" />
      <Compile Include="Assets\Scripts\Frontend\UI\WorldMenu.cs" />
+     <Compile Include="Assets\Scripts\Frontend\WorldBuilder.cs" />
      <Compile Include="Assets\Scripts\Frontend\WorldFront.cs" />
      <Compile Include="Assets\Scripts\Util\FixedQueue.cs" />
      <Compile Include="Assets\Scripts\Util\Grapher.cs" />
