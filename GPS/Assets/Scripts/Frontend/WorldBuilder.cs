@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CTD_Sim.Frontend
 {
@@ -12,7 +13,7 @@ namespace CTD_Sim.Frontend
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && new Rect(0, 0, Screen.width, Screen.height).Contains(Input.mousePosition))
             {
                 clickPos = RealMousePos();
                 roadStart = GetNode(clickPos);
@@ -20,24 +21,27 @@ namespace CTD_Sim.Frontend
         
             if (Input.GetMouseButtonUp(0))
             {
-                NodeFront roadEnd = GetNode(RealMousePos());
+                if (!EventSystem.current.IsPointerOverGameObject() && new Rect(0, 0, Screen.width, Screen.height).Contains(Input.mousePosition))
+                {
+                    NodeFront roadEnd = GetNode(RealMousePos());
 
-                if (roadStart == null)
-                {
-                    if (roadEnd == null)
+                    if (roadStart == null)
                     {
-                        NodeFront clone = Instantiate(node);
-                        clone.transform.position = RealMousePos();
+                        if (roadEnd == null)
+                        {
+                            NodeFront clone = Instantiate(node);
+                            clone.transform.position = RealMousePos();
+                        }
                     }
-                }
-                else
-                {
-                    Debug.Log("Yep");
-                    if (roadEnd != null && roadEnd != roadStart)
+                    else
                     {
-                        RoadFront clone = Instantiate(road);
-                        clone.from = roadStart;
-                        clone.to = roadEnd;
+                        Debug.Log("Yep");
+                        if (roadEnd != null && roadEnd != roadStart)
+                        {
+                            RoadFront clone = Instantiate(road);
+                            clone.from = roadStart;
+                            clone.to = roadEnd;
+                        }
                     }
                 }
 
